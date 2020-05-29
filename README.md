@@ -52,20 +52,24 @@ Create an instance of Message class:
     message.setData(data);
 ```
 
-Step 4. Call `getToken()` method to get an authorization token from mpesa API
+Step 4. Call `sendMessage()` method to get an authorization token from Firebase API.
+
+NOTE::
+
+*ADD YOUR FIREBASE SERVER API* use ```FCM_KEY```
 
 ```
-            mpesa.getToken(new TokenListener() {
-                @Override
-                public void onToken(Token token) {
-                    //todo save token or call the stkpush();
-                }
+  FCMHelper.sendMessage(FCM_KEY, message).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                Log.e("REQUEST TO DRIVER", message.getData().toString());
+            }
 
-                @Override
-                public void OnError(Throwable throwable) {
-                    //called when an error occures
-                }
-            });
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+        });
 ```
 
 * ```public void onToken(Token token)```
