@@ -38,16 +38,18 @@ dependencies {
 
 Step 3. ** Initialize the SDK **
 
-Create an instance of ImejaMpesa class: 
+Create an instance of Message class:
 
-Note: 
-
-*For Development Purpose* use ```OperationMode.SANDOX``` 
-
-*For Production Purpose*  use ```OperationMode.PRODUCTION``` 
 
 ```
-ImejaMpesa mpesa = new ImejaMpesa(YOUR_CONSUMER_KEY, YOUR_CONSUMER_SECRET, OperationMode.SANDBOX);
+    Message data = new Message();
+    data.title = "Your desired title of the notification to send";
+    data.token = "Pass your recipient FCM token";
+    data.message = "Message to be sent in the notification";
+
+    final FCMMessage message = new FCMMessage();
+    message.setTo(token);
+    message.setData(data);
 ```
 
 Step 4. Call `getToken()` method to get an authorization token from mpesa API
