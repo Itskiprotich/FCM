@@ -4,18 +4,14 @@ Mpesa-Checkout makes it easy to process online checkout using mpesa as the prefe
 
 ## Getting Started
 
-To get started follow this link to create an account with safaricom developer
-[here](https://developer.safaricom.co.ke/).
+To get started follow this link to create an account with Firebase
+[here](https://firebase.google.com/).
 
 To make an API call, you will need:
-* A Consumer key
-* A Consumer Secret
+* Firebase Server Key
+* A User Access Token
  
-Remember to replace the test key with your live key in production.
-
-For testing purposes, you can get test credentials here. Use the Lipa Na Mpesa Online Shortcode 
-and Lipa Na Mpesa Online Passkey from the link.
-[Lipa na Mpesa Test credentials](https://developer.safaricom.co.ke/test_credentials)
+Remember to completely connect your app to firebase.
 
 ### Installing
 
@@ -36,7 +32,7 @@ Step 2. ** Add the dependency **
 
 ```
 dependencies {
-	   implementation 'com.github.Keeprawteach:Mpesa-Checkout:1.1.1'
+	   implementation 'com.github.Keeprawteach:FCM:1.0.0'
 	}
 ```
 
