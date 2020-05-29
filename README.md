@@ -72,56 +72,45 @@ NOTE::
         });
 ```
 
-* ```public void onToken(Token token)```
-
-This method is called when initializing the Mpesa instance is successful.
-Therefore, you can use this method to make a transaction.
-
-* ```public void OnError(Throwable throwable))```
-
-    In case of any error an exception is thrown. You can `Log.error(throwable.getMessage)`
-     to view the error. Make sure your credentials are correct.
-
-
-## Making a transaction
+## Handling The Message
 REQUIREMENTS:
-1. A business shortcode. For testing purposes.
-2. A pass key. 
-3. The amount to transact.
-4. The phone number making the payment.
+1. Ensure you have added firebase messaging dependency.
+2. Follow the Complete steps provided [here](https://firebase.google.com/docs/cloud-messaging/android/client).
 
-You can get test credential [here](https://developer.safaricom.co.ke/test_credentials)
 
-To make a transaction , create an instance of `STKPush` and pass in `Token`, `STKPush`, and 
-a callback listener `new STKListener()`.
+To handle incoming messages, in your `onMessageReceived`. add the following lines
 
 ```
-    STKPush stkPush = new STKPush();
-    stkPush.setBusinessShortCode(BUSINESS_SHORT_CODE);
-    stkPush.setTimestamp(STKPush.getTimestamp());
-    stkPush.setTransactionType(TRANSACTION_TYPE);
-    stkPush.setAmount(ENTER_AMOUNT);
-    stkPush.setPartyA(STKPush.sanitizePhoneNumber(ENTER_PHONE_NUMBER));
-    stkPush.setPartyB(ENTER_PARTYB);
-    stkPush.setPhoneNumber(STKPush.sanitizePhoneNumber(ENTER_PHONE_NUMBER));
-    stkPush.setCallBackURL(ENTER_CALLBACKURL);
-    stkPush.setAccountReference("test");
-    stkPush.setTransactionDesc("some description");
+  @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.e(TAG, "From: " + remoteMessage.getFrom());
+
+        // Check if message contains a data payload.
+        if (remoteMessage.getData().size() > 0) {
+            Log.e(TAG, "Message data payload: " + remoteMessage.getData());
+
+            sendNotification(getValue(remoteMessage.getData(), "title"),getValue(remoteMessage.getData(), "message"));
+
+
+        }
+    }
 ```
- Call this method to pop up the STK push
+ Inside the `getValue()` method, check the sample
  
 ```
-      mpesa.startStkPush(token, stkPush, new STKListener() {
-            @Override
-            public void onResponse(STKPushResponse stkPushResponse) {
-                Log.e(TAG, "onResponse: " + stkPushResponse.toJson(stkPushResponse));
-                }
- 
-            @Override
-            public void onError(Throwable throwable) {
-                 Log.e(TAG, "onError: " + throwable.getMessage());
-            }
-      });
+  public String getValue(Map<String, String> data, String key) {
+         try {
+             if (data.containsKey(key))
+                 return data.get(key);
+             else
+                 return getString(R.string.app_name);
+         } catch (Exception ex) {
+             ex.printStackTrace();
+             return getString(R.string.app_name);
+         }
+     }
 ```
 
 
